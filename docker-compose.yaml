@@ -45,6 +45,8 @@ services:
 
   airbyte-webapp:
     image: airbyte/webapp:0.58.0
+    environment:
+      - INTERNAL_API_HOST=airbyte-server:8000
     container_name: airbyte-webapp
     ports:
       - "8001:80"
