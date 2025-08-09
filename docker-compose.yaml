@@ -25,14 +25,16 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      # (no PGDATA needed if we mount the default path)
     volumes:
-      - ./volumes/pgdata:/var/lib/postgresql/data/pgdata
+      - ./volumes/pgdata:/var/lib/postgresql/data   # <-- mount to default path
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 20
+
 
   airbyte-server:
     image: airbyte/server:0.58.0
